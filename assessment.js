@@ -8,13 +8,36 @@ assessmentButton.addEventListener(
   'click',
   () => {
     const userName = userNameInput.value;
-    if (userName.length === 0){
+    if (userName.length === 0) {
       //名前が空の時は処理を終了する
       return;
     }
     //診断結果表示エリアの作成
     resultDivision.innerText = '';
-    const header = document.createElement('h3');
+
+    //headerDivisionの作成
+    const headerDivision = document.createElement('div');//divタグ
+    headerDivision.setAttribute('class', 'card-header text-bg-primary');//bootstrapのクラス
+    headerDivision.innerText = '診断結果';
+
+    //bodyDivisionの作成
+    const bodyDivision = document.createElement('div');
+    bodyDivision.setAttribute('class', 'card-body');
+
+    const paragraph = document.createElement('p');
+    paragraph.setAttribute('class', 'card-text');
+    const result = assessment(userName);
+    paragraph.innerText = result;
+    bodyDivision.appendChild(paragraph);
+
+    //bootstrapのcardクラスの適用
+    resultDivision.setAttribute('class', 'card');
+
+    //headerDivisionとbodyDivisionをresultDivisionに差し込む
+    resultDivision.appendChild(headerDivision);
+    resultDivision.appendChild(bodyDivision);
+
+    /*const header = document.createElement('h3');
     header.innerText = '診断結果';
     resultDivision.appendChild(header);
 
@@ -22,6 +45,7 @@ assessmentButton.addEventListener(
     const result = assessment(userName);
     paragraph.innerText = result;
     resultDivision.appendChild(paragraph);
+    */
 
     //ツイートエリアの作成
     tweetDivision.innerText = '';
@@ -33,8 +57,8 @@ assessmentButton.addEventListener(
 
     anchor.setAttribute('href', hrefValue);
     anchor.setAttribute('class', 'twitter-hashtag-button');
-    anchor.setAttribute('data-text',result);
-    anchor.innerText= 'Tweet #あなたのいいところ';
+    anchor.setAttribute('data-text', result);
+    anchor.innerText = 'Tweet #あなたのいいところ';
 
     tweetDivision.appendChild(anchor);
 
@@ -47,7 +71,7 @@ assessmentButton.addEventListener(
 userNameInput.addEventListener(
   'keydown',
   (event) => {
-    if (event.code === 'Enter'){
+    if (event.code === 'Enter') {
       assessmentButton.dispatchEvent(new Event('click'));
     }
   }
@@ -80,7 +104,7 @@ const answers = [
 function assessment(userName) {
   //全文字のコード番号を取得してそれを足し合わせる
   let sumOfCharCode = 0;
-  for (let i =0; i < userName.length; i++) {
+  for (let i = 0; i < userName.length; i++) {
     sumOfCharCode = sumOfCharCode + userName.charCodeAt(i);
   }
 
